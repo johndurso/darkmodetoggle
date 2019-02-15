@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dark Mode Toggle</title>
+<style>
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700");
+body {
+  font-family: "Open Sans", sans-serif;
+}
+body[data-theme="dark"] {
+  background-color: #263238;
+  color: #ccc;
+}
+
+.toggle {
+  padding: 10px 0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.middle {
+  position: absolute;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  text-align: center;
+}
+.middle h1 {
+  font-size: 2em;
+  padding: 10px 0;
+}
+
+.theme-button {
+  background-color: transparent;
+  border: 1px solid transparent;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+}
+.theme-button:focus {
+  background: #fff490;
+  border-radius: 100%;
+}
+[data-theme="dark"] .theme-button:focus {
+  background-color: #304047;
+}
+
+.moon, .sun {
+  display: none;
+}
+
+[data-theme="dark"] .moon {
+  display: inline-block;
+}
+.moon svg {
+  fill: #FFF176;
+}
+
+[data-theme="light"] .sun {
+  display: inline-block;
+}
+.sun svg {
+  fill: #263238;
+}
+
+</style>
+</head>
+<body data-theme="dark">
+	<div class="toggle">
+		<button class="js-theme-btn theme-button">
+		<span class="moon">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 12c0 6.627 5.373 12 12 12s12-5.373 12-12-5.373-12-12-12-12 5.373-12 12zm2 0c0-5.292 4.113-9.612 9.315-9.965-3.205 2.154-5.315 5.813-5.315 9.965s2.11 7.811 5.315 9.965c-5.202-.353-9.315-4.673-9.315-9.965z"/></svg>
+		</span>
+		<span class="sun">
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M17 12c0 2.762-2.238 5-5 5s-5-2.238-5-5 2.238-5 5-5 5 2.238 5 5zm-5-7c.34 0 .672.033 1 .08v-2.08h-2v2.08c.328-.047.66-.08 1-.08zm-4.184 1.401l-1.472-1.473-1.415 1.415 1.473 1.473c.402-.537.878-1.013 1.414-1.415zm9.782 1.414l1.473-1.473-1.414-1.414-1.473 1.473c.537.402 1.012.878 1.414 1.414zm-5.598 11.185c-.34 0-.672-.033-1-.08v2.08h2v-2.08c-.328.047-.66.08-1 .08zm4.185-1.402l1.473 1.473 1.415-1.415-1.473-1.472c-.403.536-.879 1.012-1.415 1.414zm-11.185-5.598c0-.34.033-.672.08-1h-2.08v2h2.08c-.047-.328-.08-.66-.08-1zm13.92-1c.047.328.08.66.08 1s-.033.672-.08 1h2.08v-2h-2.08zm-12.519 5.184l-1.473 1.473 1.414 1.414 1.473-1.473c-.536-.402-1.012-.877-1.414-1.414z"/></svg>
+		</span>
+		</button>
+	</div>
+
+	<div class="middle">
+		<br>
+		<h1>Dark Mode Toggle</h1>
+	</div>
+
+	
+<script>
+	const STORAGE_KEY = 'theme';
+	const THEME_ATTRIBUTE = 'data-theme';
+	const THEME_BTN_CLASS = '.js-theme-btn';
+
+	function setTheme() {
+		// Are we using the "light" or "dark" theme?
+		let theme = localStorage.getItem(STORAGE_KEY); // Either "light" or "dark"
+
+		if (!theme) {
+			const hour = (new Date).getHours();
+			const isNightTime = hour > 18 || hour < 6;
+
+			theme = isNightTime ? "dark" : "light";
+		}
+
+		// Set the data attribute to the theme
+		document.body.setAttribute(THEME_ATTRIBUTE, theme);
+	}
+
+	function handleThemeBtnClick() {
+		// figure what do we need to change the theme to?
+		const currentTheme = document.body.getAttribute(THEME_ATTRIBUTE);
+
+		const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+		localStorage.setItem(STORAGE_KEY, newTheme);
+
+		setTheme();
+	}
+
+	document.querySelector(THEME_BTN_CLASS).addEventListener('click', handleThemeBtnClick);
+
+	setTheme();
+</script>
+	
+</body>
+</html>
